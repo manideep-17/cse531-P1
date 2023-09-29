@@ -16,6 +16,21 @@
     },
     {
         "id": 1,
+        "type": "customer",
+        "events": [
+            {
+                "id": 3,
+                "interface": "withdraw",
+                "money": 50
+            },
+            {
+                "id": 4,
+                "interface": "query"
+            }
+        ]
+    },
+    {
+        "id": 1,
         "type": "branch",
         "balance": 400
     }
