@@ -18,10 +18,10 @@ class Customer:
         # pointer for the stub
         self.stub = None
         self.port = 50051 + id
-        self.lastProcessedId = 0
+        self.lastProcessedId = -1
 
     def appendEvents(self, events):
-        self.events.append(events)
+        self.events.extend(events)
 
     # TODO: students are expected to create the Customer stub
     def createStub(self):
@@ -34,8 +34,12 @@ class Customer:
         if self.stub is None:
             self.stub = self.createStub()
         result = []
-        for i in range(len(self.events)):
-            print("processing event")
+        for i in range(self.lastProcessedId+1, len(self.events)):
+            print("processing event", i)
+            print(self.events[i])
+            self.lastProcessedId = i
+            # if(self.events[i]["interface"] == "deposit"):
+            #     response = self.stub.Deposit(id=self.id, event_id=self.events[i]["id"], money=self.events[i]["money"])
         pass
 
 
@@ -51,11 +55,11 @@ if __name__ == '__main__':
 
     for i in range(len(data)):
         if (data[i]["type"] == "customer"):
-            customerData.append(data[i])
-        if data[i]["id"] not in customers:
-            customers[data[i]["id"]] = Customer(
-                data[i]["id"], data[i]["events"])
-            response.append(customers[data[i]["id"]].executeEvents())
-        else:
-            customers[data[i]["id"]].appendEvents(data[i]["events"])
-            response.append(customers[data[i]["id"]].executeEvents())
+            # customerData.append(data[i])
+            if data[i]["id"] not in customers:
+                customers[data[i]["id"]] = Customer(
+                    data[i]["id"], data[i]["events"])
+                response.append(customers[data[i]["id"]].executeEvents())
+            else:
+                customers[data[i]["id"]].appendEvents(data[i]["events"])
+                response.append(customers[data[i]["id"]].executeEvents())
