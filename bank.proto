@@ -1,9 +1,13 @@
+// python3 -m grpc_tools.protoc --python_out=. --pyi_out=. --grpc_python_out=. --proto_path=. bank.proto
+
 syntax = "proto3";
 
 service Bank {
-    rpc Query(QueryRequest) returns (QueryResponse);
-    rpc Deposit(DepositRequest) returns (DepositResponse);
-    rpc Withdraw(WithdrawRequest) returns (WithdrawResponse);
+    rpc Query(QueryRequest) returns (QueryResponse) {}
+    rpc Deposit(DepositRequest) returns (DepositResponse) {}
+    rpc Withdraw(WithdrawRequest) returns (WithdrawResponse) {}
+    rpc Propagate_Deposit(PropagateDepositRequest) returns (PropagateDepositResponse) {}
+    rpc Propagate_Withdraw(PropagateWithdrawRequest) returns (PropagateWithdrawResponse) {}
 }
 
 message QueryRequest {
@@ -32,11 +36,27 @@ message DepositResponse {
 message WithdrawRequest {
     int32 id = 1;
     int32 event_id = 2;
-    string money = 3;
+    int32 money = 3;
 }
 
 message WithdrawResponse {
     int32 id = 1;
     int32 event_id = 2;
+    string result = 3;
+}
+
+message PropagateDepositRequest {
+    int32 balance = 3;
+}
+
+message PropagateDepositResponse {
+    string result = 3;
+}
+
+message PropagateWithdrawRequest {
+    int32 balance = 3;
+}
+
+message PropagateWithdrawResponse {
     string result = 3;
 }

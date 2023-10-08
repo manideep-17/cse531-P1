@@ -49,8 +49,8 @@ class WithdrawRequest(_message.Message):
     MONEY_FIELD_NUMBER: _ClassVar[int]
     id: int
     event_id: int
-    money: str
-    def __init__(self, id: _Optional[int] = ..., event_id: _Optional[int] = ..., money: _Optional[str] = ...) -> None: ...
+    money: int
+    def __init__(self, id: _Optional[int] = ..., event_id: _Optional[int] = ..., money: _Optional[int] = ...) -> None: ...
 
 class WithdrawResponse(_message.Message):
     __slots__ = ["id", "event_id", "result"]
@@ -61,3 +61,27 @@ class WithdrawResponse(_message.Message):
     event_id: int
     result: str
     def __init__(self, id: _Optional[int] = ..., event_id: _Optional[int] = ..., result: _Optional[str] = ...) -> None: ...
+
+class PropagateDepositRequest(_message.Message):
+    __slots__ = ["balance"]
+    BALANCE_FIELD_NUMBER: _ClassVar[int]
+    balance: int
+    def __init__(self, balance: _Optional[int] = ...) -> None: ...
+
+class PropagateDepositResponse(_message.Message):
+    __slots__ = ["result"]
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: str
+    def __init__(self, result: _Optional[str] = ...) -> None: ...
+
+class PropagateWithdrawRequest(_message.Message):
+    __slots__ = ["balance"]
+    BALANCE_FIELD_NUMBER: _ClassVar[int]
+    balance: int
+    def __init__(self, balance: _Optional[int] = ...) -> None: ...
+
+class PropagateWithdrawResponse(_message.Message):
+    __slots__ = ["result"]
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: str
+    def __init__(self, result: _Optional[str] = ...) -> None: ...
