@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nbank.proto\",\n\x0cQueryRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\">\n\rQueryResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x05\"=\n\x0e\x44\x65positRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\r\n\x05money\x18\x03 \x01(\x05\"?\n\x0f\x44\x65positResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t\">\n\x0fWithdrawRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\r\n\x05money\x18\x03 \x01(\t\"@\n\x10WithdrawResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t2\x8d\x01\n\x04\x42\x61nk\x12&\n\x05Query\x12\r.QueryRequest\x1a\x0e.QueryResponse\x12,\n\x07\x44\x65posit\x12\x0f.DepositRequest\x1a\x10.DepositResponse\x12/\n\x08Withdraw\x12\x10.WithdrawRequest\x1a\x11.WithdrawResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nbank.proto\",\n\x0cQueryRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\">\n\rQueryResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x05\"=\n\x0e\x44\x65positRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\r\n\x05money\x18\x03 \x01(\x05\"?\n\x0f\x44\x65positResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t\">\n\x0fWithdrawRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\r\n\x05money\x18\x03 \x01(\x05\"@\n\x10WithdrawResponse\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x10\n\x08\x65vent_id\x18\x02 \x01(\x05\x12\x0e\n\x06result\x18\x03 \x01(\t\"*\n\x17PropagateDepositRequest\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x05\"*\n\x18PropagateDepositResponse\x12\x0e\n\x06result\x18\x03 \x01(\t\"+\n\x18PropagateWithdrawRequest\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x05\"+\n\x19PropagateWithdrawResponse\x12\x0e\n\x06result\x18\x03 \x01(\t2\xae\x02\n\x04\x42\x61nk\x12(\n\x05Query\x12\r.QueryRequest\x1a\x0e.QueryResponse\"\x00\x12.\n\x07\x44\x65posit\x12\x0f.DepositRequest\x1a\x10.DepositResponse\"\x00\x12\x31\n\x08Withdraw\x12\x10.WithdrawRequest\x1a\x11.WithdrawResponse\"\x00\x12J\n\x11Propagate_Deposit\x12\x18.PropagateDepositRequest\x1a\x19.PropagateDepositResponse\"\x00\x12M\n\x12Propagate_Withdraw\x12\x19.PropagateWithdrawRequest\x1a\x1a.PropagateWithdrawResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -33,6 +33,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_WITHDRAWREQUEST']._serialized_end=314
   _globals['_WITHDRAWRESPONSE']._serialized_start=316
   _globals['_WITHDRAWRESPONSE']._serialized_end=380
-  _globals['_BANK']._serialized_start=383
-  _globals['_BANK']._serialized_end=524
+  _globals['_PROPAGATEDEPOSITREQUEST']._serialized_start=382
+  _globals['_PROPAGATEDEPOSITREQUEST']._serialized_end=424
+  _globals['_PROPAGATEDEPOSITRESPONSE']._serialized_start=426
+  _globals['_PROPAGATEDEPOSITRESPONSE']._serialized_end=468
+  _globals['_PROPAGATEWITHDRAWREQUEST']._serialized_start=470
+  _globals['_PROPAGATEWITHDRAWREQUEST']._serialized_end=513
+  _globals['_PROPAGATEWITHDRAWRESPONSE']._serialized_start=515
+  _globals['_PROPAGATEWITHDRAWRESPONSE']._serialized_end=558
+  _globals['_BANK']._serialized_start=561
+  _globals['_BANK']._serialized_end=863
 # @@protoc_insertion_point(module_scope)

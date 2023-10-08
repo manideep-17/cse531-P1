@@ -9,13 +9,10 @@ import bank_pb2_grpc
 
 class Customer:
     def __init__(self, id, events):
-        # unique ID of the Customer
         self.id = id
-        # events from the input
         self.events = events
-        # a list of received messages used for debugging purpose
         self.recvMsg = list()
-        # pointer for the stub
+        self.channel = None
         self.stub = None
         self.port = 50051 + id
         self.lastProcessedId = -1
@@ -23,24 +20,47 @@ class Customer:
     def appendEvents(self, events):
         self.events.extend(events)
 
-    # TODO: students are expected to create the Customer stub
     def createStub(self):
-        with grpc.insecure_channel(f"localhost:{self.port}") as channel:
-            stub = bank_pb2_grpc.BankStub(channel)
+        self.channel = grpc.insecure_channel(f"localhost:{self.port}")
+        stub = bank_pb2_grpc.BankStub(self.channel)
         return stub
 
-    # TODO: students are expected to send out the events to the Bank
     def executeEvents(self):
         if self.stub is None:
             self.stub = self.createStub()
-        result = []
+        result = {
+            "id": self.id,
+            "events": []
+        }
         for i in range(self.lastProcessedId+1, len(self.events)):
-            print("processing event", i)
-            print(self.events[i])
             self.lastProcessedId = i
-            # if(self.events[i]["interface"] == "deposit"):
-            #     response = self.stub.Deposit(id=self.id, event_id=self.events[i]["id"], money=self.events[i]["money"])
-        pass
+            print(
+                f"processing {self.events[i]['interface']} Event with Index: {i}")
+            if (self.events[i]["interface"] == "deposit"):
+                response = self.stub.Deposit(bank_pb2.DepositRequest(
+                    id=self.id, event_id=self.events[i]["id"], money=self.events[i]["money"]))
+                result["events"].append({
+                    "id": response.event_id,
+                    "interface": self.events[i]["interface"],
+                    "result": response.result
+                })
+            if (self.events[i]["interface"] == "query"):
+                response = self.stub.Query(bank_pb2.QueryRequest(
+                    id=self.id, event_id=self.events[i]["id"]))
+                result["events"].append({
+                    "id": response.event_id,
+                    "interface": self.events[i]["interface"],
+                    "balance": response.balance
+                })
+            if (self.events[i]["interface"] == "withdraw"):
+                response = self.stub.Withdraw(bank_pb2.WithdrawRequest(
+                    id=self.id, event_id=self.events[i]["id"], money=self.events[i]["money"]))
+                result["events"].append({
+                    "id": response.event_id,
+                    "interface": self.events[i]["interface"],
+                    "result": response.result
+                })
+        return result
 
 
 if __name__ == '__main__':
@@ -60,6 +80,8 @@ if __name__ == '__main__':
                 customers[data[i]["id"]] = Customer(
                     data[i]["id"], data[i]["events"])
                 response.append(customers[data[i]["id"]].executeEvents())
+
             else:
                 customers[data[i]["id"]].appendEvents(data[i]["events"])
                 response.append(customers[data[i]["id"]].executeEvents())
+    print(response)

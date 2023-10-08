@@ -29,6 +29,16 @@ class BankStub(object):
                 request_serializer=bank__pb2.WithdrawRequest.SerializeToString,
                 response_deserializer=bank__pb2.WithdrawResponse.FromString,
                 )
+        self.Propagate_Deposit = channel.unary_unary(
+                '/Bank/Propagate_Deposit',
+                request_serializer=bank__pb2.PropagateDepositRequest.SerializeToString,
+                response_deserializer=bank__pb2.PropagateDepositResponse.FromString,
+                )
+        self.Propagate_Withdraw = channel.unary_unary(
+                '/Bank/Propagate_Withdraw',
+                request_serializer=bank__pb2.PropagateWithdrawRequest.SerializeToString,
+                response_deserializer=bank__pb2.PropagateWithdrawResponse.FromString,
+                )
 
 
 class BankServicer(object):
@@ -52,6 +62,18 @@ class BankServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Propagate_Deposit(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def Propagate_Withdraw(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BankServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -69,6 +91,16 @@ def add_BankServicer_to_server(servicer, server):
                     servicer.Withdraw,
                     request_deserializer=bank__pb2.WithdrawRequest.FromString,
                     response_serializer=bank__pb2.WithdrawResponse.SerializeToString,
+            ),
+            'Propagate_Deposit': grpc.unary_unary_rpc_method_handler(
+                    servicer.Propagate_Deposit,
+                    request_deserializer=bank__pb2.PropagateDepositRequest.FromString,
+                    response_serializer=bank__pb2.PropagateDepositResponse.SerializeToString,
+            ),
+            'Propagate_Withdraw': grpc.unary_unary_rpc_method_handler(
+                    servicer.Propagate_Withdraw,
+                    request_deserializer=bank__pb2.PropagateWithdrawRequest.FromString,
+                    response_serializer=bank__pb2.PropagateWithdrawResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -128,5 +160,39 @@ class Bank(object):
         return grpc.experimental.unary_unary(request, target, '/Bank/Withdraw',
             bank__pb2.WithdrawRequest.SerializeToString,
             bank__pb2.WithdrawResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Propagate_Deposit(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Bank/Propagate_Deposit',
+            bank__pb2.PropagateDepositRequest.SerializeToString,
+            bank__pb2.PropagateDepositResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Propagate_Withdraw(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/Bank/Propagate_Withdraw',
+            bank__pb2.PropagateWithdrawRequest.SerializeToString,
+            bank__pb2.PropagateWithdrawResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

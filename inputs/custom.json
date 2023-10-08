@@ -30,7 +30,22 @@
         ]
     },
     {
+        "id": 2,
+        "type": "customer",
+        "events": [
+            {
+                "id": 5,
+                "interface": "query"
+            }
+        ]
+    },
+    {
         "id": 1,
+        "type": "branch",
+        "balance": 400
+    },
+    {
+        "id": 2,
         "type": "branch",
         "balance": 400
     }
