@@ -87,8 +87,6 @@ class Branch(bank_pb2_grpc.BankServicer):
             response = self.Propagate_Withdraw(request=request)
         elif request.interface == "propagatedeposit":
             response = self.Propagate_Deposit(request=request)
-        else:
-            print("issue")
         id = response.get("id", None)
         event_id = response.get("event_id", None)
         balance = response.get("balance", None)
