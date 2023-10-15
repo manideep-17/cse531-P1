@@ -45,6 +45,7 @@ class Branch(bank_pb2_grpc.BankServicer):
     def Withdraw(self, request, context):
         status = "fail"
         if self.balance >= request.money:
+            status = "success"
             self.balance -= request.money
             # propagate withdraw
             if len(self.channelList) == 0:
