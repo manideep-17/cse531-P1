@@ -3,60 +3,21 @@
 syntax = "proto3";
 
 service Bank {
-    rpc Query(QueryRequest) returns (QueryResponse) {}
-    rpc Deposit(DepositRequest) returns (DepositResponse) {}
-    rpc Withdraw(WithdrawRequest) returns (WithdrawResponse) {}
-    rpc Propagate_Deposit(PropagateDepositRequest) returns (PropagateDepositResponse) {}
-    rpc Propagate_Withdraw(PropagateWithdrawRequest) returns (PropagateWithdrawResponse) {}
+    rpc MsgDelivery(MsgDeliveryRequest) returns (MsgDeliveryResponse) {}
 }
 
-message QueryRequest {
+message MsgDeliveryRequest {
     int32 id = 1;
     int32 event_id = 2;
+    string interface = 3;
+    int32 money = 4;
+    int32 balance = 5;
 }
 
-message QueryResponse {
+message MsgDeliveryResponse{
     int32 id = 1;
     int32 event_id = 2;
     int32 balance = 3;
-}
+    string result = 4;
 
-message DepositRequest {
-    int32 id = 1;
-    int32 event_id = 2;
-    int32 money = 3;
-}
-
-message DepositResponse {
-    int32 id = 1;
-    int32 event_id = 2;
-    string result = 3;
-}
-
-message WithdrawRequest {
-    int32 id = 1;
-    int32 event_id = 2;
-    int32 money = 3;
-}
-
-message WithdrawResponse {
-    int32 id = 1;
-    int32 event_id = 2;
-    string result = 3;
-}
-
-message PropagateDepositRequest {
-    int32 balance = 3;
-}
-
-message PropagateDepositResponse {
-    string result = 3;
-}
-
-message PropagateWithdrawRequest {
-    int32 balance = 3;
-}
-
-message PropagateWithdrawResponse {
-    string result = 3;
 }

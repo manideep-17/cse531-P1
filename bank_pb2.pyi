@@ -4,6 +4,32 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class MsgDeliveryRequest(_message.Message):
+    __slots__ = ["id", "event_id", "interface", "money", "balance"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    INTERFACE_FIELD_NUMBER: _ClassVar[int]
+    MONEY_FIELD_NUMBER: _ClassVar[int]
+    BALANCE_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    event_id: int
+    interface: str
+    money: int
+    balance: int
+    def __init__(self, id: _Optional[int] = ..., event_id: _Optional[int] = ..., interface: _Optional[str] = ..., money: _Optional[int] = ..., balance: _Optional[int] = ...) -> None: ...
+
+class MsgDeliveryResponse(_message.Message):
+    __slots__ = ["id", "event_id", "balance", "result"]
+    ID_FIELD_NUMBER: _ClassVar[int]
+    EVENT_ID_FIELD_NUMBER: _ClassVar[int]
+    BALANCE_FIELD_NUMBER: _ClassVar[int]
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    id: int
+    event_id: int
+    balance: int
+    result: str
+    def __init__(self, id: _Optional[int] = ..., event_id: _Optional[int] = ..., balance: _Optional[int] = ..., result: _Optional[str] = ...) -> None: ...
+
 class QueryRequest(_message.Message):
     __slots__ = ["id", "event_id"]
     ID_FIELD_NUMBER: _ClassVar[int]

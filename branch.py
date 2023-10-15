@@ -1,7 +1,6 @@
 from concurrent import futures
 import sys
 import json
-
 import grpc
 import bank_pb2
 import bank_pb2_grpc
@@ -11,20 +10,13 @@ class Branch(bank_pb2_grpc.BankServicer):
     def __init__(self, id, balance, branches):
         self.id = id
         self.balance = balance
-        # the list of process IDs of the branches
         self.branches = branches
-        # the list of Client stubs to communicate with the branches
         self.channelList = list()
         self.stubList = list()
-        # a list of received messages used for debugging purpose
         self.recvMsg = list()
-        # iterate the processID of the branches
-        # TODO: students are expected to store the processID of the branches
-        pass
 
-    def Deposit(self, request, context):
+    def Deposit(self, request):
         self.balance += request.money
-        # propagate deposit
         if len(self.channelList) == 0:
             for id in self.branches:
                 port = 50051 + id
@@ -34,19 +26,26 @@ class Branch(bank_pb2_grpc.BankServicer):
                 stub = bank_pb2_grpc.BankStub(channel)
                 self.stubList.append(stub)
         for stub in self.stubList:
-            stub.Propagate_Deposit(
-                bank_pb2.PropagateDepositRequest(balance=self.balance))
+            stub.MsgDelivery(
+                bank_pb2.MsgDeliveryRequest(balance=self.balance, interface="propagatedeposit"))
+        return {
+            "id": self.id,
+            "event_id": request.event_id,
+            "result": "success"
+        }
 
-        return bank_pb2.DepositResponse(id=self.id, event_id=request.event_id, result="success")
+    def Query(self, request):
+        return {
+            "id": self.id,
+            "event_id": request.event_id,
+            "balance": self.balance
+        }
 
-    def Query(self, request, context):
-        return bank_pb2.QueryResponse(id=self.id, event_id=request.event_id, balance=self.balance)
-
-    def Withdraw(self, request, context):
+    def Withdraw(self, request):
         status = "fail"
         if self.balance >= request.money:
+            status = "success"
             self.balance -= request.money
-            # propagate withdraw
             if len(self.channelList) == 0:
                 for id in self.branches:
                     port = 50051 + id
@@ -56,23 +55,43 @@ class Branch(bank_pb2_grpc.BankServicer):
                     stub = bank_pb2_grpc.BankStub(channel)
                     self.stubList.append(stub)
             for stub in self.stubList:
-                stub.Propagate_Withdraw(
-                    bank_pb2.PropagateWithdrawRequest(balance=self.balance))
-        return bank_pb2.WithdrawResponse(id=self.id, event_id=request.event_id, result=status)
+                stub.MsgDelivery(
+                    bank_pb2.MsgDeliveryRequest(balance=self.balance, interface="propagatewithdraw"))
+        return {
+            "id": self.id,
+            "event_id": request.event_id,
+            "result": status
+        }
 
-    def Propagate_Deposit(self, request, context):
+    def Propagate_Deposit(self, request):
         self.balance = request.balance
-        return bank_pb2.PropagateDepositResponse(result="success")
+        return {
+            "result": "success"
+        }
 
-    def Propagate_Withdraw(self, request, context):
+    def Propagate_Withdraw(self, request):
         self.balance = request.balance
-        return bank_pb2.PropagateWithdrawResponse(result="success")
-
-    # TODO: students are expected to process requests from both Client and Branch
+        return {
+            "result": "success"
+        }
 
     def MsgDelivery(self, request, context):
         self.recvMsg.append(request)
-        pass
+        if request.interface == "query":
+            response = self.Query(request=request)
+        elif request.interface == "deposit":
+            response = self.Deposit(request=request)
+        elif request.interface == "withdraw":
+            response = self.Withdraw(request=request)
+        elif request.interface == "propagatewithdraw":
+            response = self.Propagate_Withdraw(request=request)
+        elif request.interface == "propagatedeposit":
+            response = self.Propagate_Deposit(request=request)
+        id = response.get("id", None)
+        event_id = response.get("event_id", None)
+        balance = response.get("balance", None)
+        result = response.get("result", None)
+        return bank_pb2.MsgDeliveryResponse(id=id, event_id=event_id, balance=balance, result=result)
 
 
 def start_grpc_servers(branches):
@@ -105,7 +124,6 @@ def start_grpc_servers(branches):
 
 
 if __name__ == '__main__':
-    # Fetch the json path from the argv and read the JSON input
     file_path = f'{sys.argv[1]}'
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
